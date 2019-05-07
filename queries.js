@@ -1,7 +1,6 @@
 var promise = require('bluebird');
 
 var options = {
-  // Initialization Options
   promiseLib: promise
 };
 
@@ -40,7 +39,14 @@ async function getAluno(req, res, next){
         
         var num_alunos;
         var media;
+        var dados;
 
+        await db.many('select endereco.bairro , count(*) as total_alunos,  avg(aluno.nota) as media_notas from aluno inner join endereco' 
+        + ' on aluno.endereco_id = endereco.id group by endereco.bairro order by count(*) desc ;').then(data =>{
+            dados = data
+           
+        });
+      
         await db.one('select count(id) from aluno').then(data =>{
             num_alunos = data.count;
         });
@@ -48,12 +54,12 @@ async function getAluno(req, res, next){
         await  db.one('select avg(nota) from aluno').then(data =>{
             media = data.avg;
         });
-
+        
         res.status(200)      
         .json({
-            status: 'successo',
-            data: {"Total de alunos" : num_alunos, "Média das notas" : media },
-            message: 'Total de alunos matriculados retornado'
+            status: 'Successo',
+            data:{"Total de alunos" : num_alunos , "Média total" : media, "Dados dos bairros" :  dados},
+            message: 'Informações gerais retornadas'
         });
     
     }
@@ -62,36 +68,6 @@ async function getAluno(req, res, next){
     }
  }
 
-
-async function informacoesBairro(req, res, next){
-
-    try{
-
-        var num_alunos;
-        var media;
-        
-        await db.one('select count(*) as num_alunos from aluno inner join  endereco'+ 
-        ' on aluno.endereco_id = endereco.id and endereco.bairro = $1', req.params.bairro).then(data=>{
-            num_alunos = data.num_alunos;
-        });
-
-        await  db.one('select avg(aluno.nota) as media from aluno inner join  endereco' + 
-        ' on aluno.endereco_id = endereco.id and endereco.bairro = $1', req.params.bairro).then(function(data){
-            media = data.media;
-        });
-
-        res.status(200)
-        .json({
-            status: 'successo',
-            data: {"Total de alunos matriculados" : num_alunos, "Média dos alunos" : media },
-            message: 'Informação dos alunos matriculados no bairro retornadas'
-        });
-
-    }
-    catch(error){
-        return next(err);
-    }
-}
 
 
  async function cadastrarAluno(req, res, next) {
@@ -110,7 +86,7 @@ async function informacoesBairro(req, res, next){
 
         res.status(200)
         .json({
-            status: 'sucesso',
+            status: 'Sucesso',
             message: 'Aluno cadastrado'
         });
 
@@ -124,6 +100,5 @@ async function informacoesBairro(req, res, next){
 module.exports = {
     getAluno : getAluno,
     informacoesGerais : informacoesGerais,
-    informacoesBairro : informacoesBairro,
     cadastrarAluno : cadastrarAluno
 };

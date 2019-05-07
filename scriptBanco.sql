@@ -50,37 +50,7 @@ insert into aluno (nome, matricula, nota, endereco_id) values ('Paulo', '6666666
 
 
 -- Contar o número total de alunos por bairro 
-
 /*
-	"Número de alunos por bairro" :[
-		{
-			"Corumbá" : 659
-		}
-		,
-		{
-			"Monte Castelo" : 390
-		}
-	]
-
-*/
-
-/*
-	"Bairros" : [
-
-		{
-			"nome" : "Corumbá",
-			"numero de alunos" : 5,
-			"média das notas" : 7.3
-		}
-
-	]
-*/
-
-
---select distinct bairro from endereco; -- Array com os nomes [Corumbá, Monte Castelo ,...]
-
-/*
-
 select count(*) as num_alunos from aluno inner join  endereco 
 		on aluno.endereco_id = endereco.id and endereco.bairro = 'Monte Castelo'; 
 */		

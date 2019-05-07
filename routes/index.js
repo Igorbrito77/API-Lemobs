@@ -69,28 +69,6 @@ var db = require('../queries');
  */
 
 
-  /**
- * @swagger
- * /escola/informacoes/{bairro}:
- *   get:
- *     tags:
- *       - Alunos
- *     description: Retorna o número total de alunos e a média de todas as notas por bairro
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: bairro
- *         description: Nome do bairro
- *         in: path
- *         required: true
- *         type: string
- *     responses:
- *       200:
- *         description: Dados gerais do bairro retornados
- *         schema:
- *           $ref: '#/definitions/Aluno'
- */
- 
 
  /**
  * @swagger
@@ -115,7 +93,6 @@ var db = require('../queries');
 
 router.get('/escola/alunos/:id', db.getAluno);
 router.get('/escola/informacoes', db.informacoesGerais);
-router.get('/escola/informacoes/:bairro', db.informacoesBairro);
 router.post('/escola/cadastrarAluno', db.cadastrarAluno); 
 
 

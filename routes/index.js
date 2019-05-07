@@ -91,9 +91,9 @@ var db = require('../queries');
  *         description: Aluno cadastrado
  */
 
-router.get('/escola/alunos/:id', db.getAluno);
-router.get('/escola/informacoes', db.informacoesGerais);
-router.post('/escola/cadastrarAluno', db.cadastrarAluno); 
+router.get('/escola/alunos/:id', db.alunoListar);
+router.get('/escola/informacoes', db.infoGeraisListar);
+router.post('/escola/cadastrarAluno', db.alunoInserir); 
 
 
 module.exports = router;

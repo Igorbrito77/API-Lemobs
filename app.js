@@ -22,7 +22,7 @@ var swaggerDefinition = {
   basePath: '/',
 };
 
-// options for the swagger docs
+// options for the swagger docs//
 var options = {
   // import swaggerDefinitions
   swaggerDefinition: swaggerDefinition,

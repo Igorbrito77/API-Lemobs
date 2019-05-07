@@ -1,3 +1,3 @@
 # API-Lemobs
 
-API impmentada com NodeJS, Express, PostgreSQL e Swagger
+API implementada com NodeJS, Express, PostgreSQL e Swagger

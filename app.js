@@ -11,7 +11,7 @@ var swaggerJSDoc = require('swagger-jsdoc');
 
 var app = express();
 
-// swagger definition
+
 var swaggerDefinition = {
   info: {
     title: 'Desafio API Lemobs',

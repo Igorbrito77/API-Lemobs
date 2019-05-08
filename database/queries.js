@@ -1,23 +1,27 @@
 var promise = require('bluebird');
-
+const secret = require('./secret');
 var options = {
   promiseLib: promise
 };
 
 var pgp = require('pg-promise')(options);
-var connectionString = 'postgres://postgres:bancoblz@localhost:5432/bancolemobs';
+
+var user = 'postgres';
+var nameDatabase = 'bancolemobs';
+
+var connectionString = 'postgres://' + user+ ':' +secret.DATABASE_PASSWORD + '@localhost:5432/' + nameDatabase;
 var db = pgp(connectionString);
 
 
+//get - retorna as informação de um aluno, tendo o seu id como parâmetro
 function listar(req, res, next){
 
     (async() => { 
 
         try{
-            var id_aluno = parseInt(req.params.id);
             var dados;
 
-            await db.one('select * from aluno where id = $1', id_aluno).then(data =>{
+            await db.one('select * from aluno where id = $1', req.params.id).then(data =>{
                 dados = data; 
             });
 
@@ -30,18 +34,26 @@ function listar(req, res, next){
 
         }
         catch(error){
-            return res.status(400).send({error : 'Aluno não cadastrado'});
+            return res.status(400).send();
         }
     })();
 }
 
+//post - insere um novo aluno no banco de dados
 function inserir(req, res, next) {
-
+    console.log(req.body.aluno.matricula);
     (async() => { 
 
         try{
 
-            var id_aluno;
+            var id_aluno, num_matriculados;
+
+            await db.one('select count(*) from aluno where matricula = $1', req.body.aluno.matricula).then(data =>{
+                num_matriculados = data.count
+            });
+
+            if(num_matriculados > 0)
+                return res.status(401).send({error : 'Aluno já matriculado'});
 
             await  db.one('insert into endereco (rua, numero, bairro) ' +
             'values( ${rua}, ${numero}, ${bairro}) returning id', req.body.endereco).then(data =>{
@@ -59,7 +71,7 @@ function inserir(req, res, next) {
 
         }
         catch(error){
-            return next(error);
+            return res.status(400).send();
         }
     })();
   }
@@ -81,7 +93,7 @@ function inserir(req, res, next) {
             
             });
         
-            await db.one('select count(id) from aluno').then(data =>{
+            await db.one('select count(*) from aluno').then(data =>{
                 num_alunos = data.count;
             });
 
@@ -98,7 +110,7 @@ function inserir(req, res, next) {
         
         }
         catch(error){
-            return next(error);
+            return res.status(500).send();
         }
     
     })();

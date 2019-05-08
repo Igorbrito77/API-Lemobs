@@ -28,36 +28,10 @@ insert into endereco (rua, numero, bairro) values('Rua Tranquilona', 444, 'Corum
 insert into endereco (rua, numero, bairro) values('Rua de boas', 565, 'Corumbá');
 
 
-insert into aluno (nome, matricula, nota, endereco_id) values ('Igor', '123456', 9.5, 1);
-insert into aluno (nome, matricula, nota, endereco_id) values ('Marcia', '22222222',7.8, 2);
-insert into aluno (nome, matricula, nota, endereco_id) values ('Lucas', '3333333', 5.7, 3);
-insert into aluno (nome, matricula, nota, endereco_id) values ('Júnior', '4444444', 10, 4);
-insert into aluno (nome, matricula, nota, endereco_id) values ('Augusto', '7878788', 5.8, 4);
-insert into aluno (nome, matricula, nota, endereco_id) values ('Pedro', '55555555', 4.5, 5);
-insert into aluno (nome, matricula, nota, endereco_id) values ('Paulo', '66666666', 7.2, 5);
-
-
-
-
---Quantidade total de alunos
-
---select count(id) from aluno;
-
-
---Média de notas dos alunos
-
---select avg(nota) from aluno; 
-
-
--- Contar o número total de alunos por bairro 
-/*
-select count(*) as num_alunos from aluno inner join  endereco 
-		on aluno.endereco_id = endereco.id and endereco.bairro = 'Monte Castelo'; 
-*/		
-
--- Média dos alunos por bairro 
-
---select avg(aluno.nota) as media from aluno inner join  endereco 
---		on aluno.endereco_id = endereco.id and endereco.bairro = 'Bairro Botafogo'; 
-
-
+insert into aluno (nome, matricula, nota, endereco_id) values ('Igor', '11111', 9.5, 1);
+insert into aluno (nome, matricula, nota, endereco_id) values ('Marcia', '22222',7.8, 2);
+insert into aluno (nome, matricula, nota, endereco_id) values ('Lucas', '33333', 5.7, 3);
+insert into aluno (nome, matricula, nota, endereco_id) values ('Júnior', '44444', 10, 4);
+insert into aluno (nome, matricula, nota, endereco_id) values ('Augusto', '55555', 5.8, 4);
+insert into aluno (nome, matricula, nota, endereco_id) values ('Pedro', '66666', 4.5, 5);
+insert into aluno (nome, matricula, nota, endereco_id) values ('Paulo', '77777', 7.2, 5);

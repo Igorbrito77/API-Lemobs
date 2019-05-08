@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../queries');
+var db = require('../database/queries');
+//var doc = require('../documentacao');
 
 /**
  * @swagger
@@ -14,7 +15,7 @@ var db = require('../queries');
 *                  nome:
 *                      type: string
 *                  matricula: 
-*                      type: integer
+*                      type: string
 *                  nota: 
 *                      type: number
 *                      format: double 
@@ -40,25 +41,6 @@ var db = require('../queries');
 
  /**
  * @swagger
- * definitions:
- *   ResponseList:
- *       200:
- *         description: Sucess
- *       400:
- *         description: Bad Request
- *       401:
- *         description: Unauthorized
- *       403:
- *         description: Forbidden
- *       404:
- *         description: Not found
- *       500:
- *         description: Internal Server Error
- */
-
-
- /**
- * @swagger
  * /escola/alunos/{id}:
  *   get:
  *     tags:
@@ -74,17 +56,13 @@ var db = require('../queries');
  *         type: integer
  *     responses:
  *       200:
- *         description: Sucess
+ *         description: Sucesso
  *       400:
- *         description: Bad Request
- *       401:
- *         description: Unauthorized
- *       403:
- *         description: Forbidden
+ *         description: Erro de sintaxe
  *       404:
- *         description: Not found
+ *         description: Não encontrado
  *       500:
- *         description: Internal Server Error
+ *         description: Erro intreno de servidor (Internal Server Error)
  */
 
 
@@ -99,17 +77,11 @@ var db = require('../queries');
  *       - application/json
  *     responses:
  *       200:
- *         description: Sucess
- *       400:
- *         description: Bad Request
- *       401:
- *         description: Unauthorized
- *       403:
- *         description: Forbidden
+ *         description: Sucesso
  *       404:
- *         description: Not found
+ *         description: Não encontrado
  *       500:
- *         description: Internal Server Error
+ *         description: Erro intreno de servidor (Internal Server Error)
 */
 
  /**
@@ -134,20 +106,16 @@ var db = require('../queries');
 *              endereco: 
 *                $ref: '#/definitions/Endereco'
 *           example:      
-*              {aluno : { nome : Ana, matricula : 12345, nota : 9.7}, endereco: {rua : Rua Brasil, numero : 456, bairro : Campo Grande}}
+*              {aluno : { nome : Ana, matricula : "12345", nota : 9.7}, endereco: {rua : Rua Brasil, numero : 456, bairro : Campo Grande}}
 *     responses:
 *           200:
-*               description: Sucess
+*               description: Sucesso
 *           400:
-*               description: Bad Request
-*           401:
-*                description: Unauthorized
-*           403:
-*               description: Forbidden
+*               description: Sintaxe incorreta
 *           404:
-*                description: Not found
+*                description: Não encontrado
 *           500:
-*               description: Internal Server Error
+*               description: Erro intreno de servidor (Internal Server Error)
 */
 
 

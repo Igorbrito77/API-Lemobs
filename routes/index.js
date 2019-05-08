@@ -4,28 +4,56 @@ var db = require('../queries');
 
 /**
  * @swagger
- * definitions:
- *   Aluno:
- *     properties:
- *       nome:
- *         type: string
- *       matricula:
- *         type: string
- *       nota:
- *         type: float
- */
+   Aluno: 
+*              type: object 
+*              required: true
+*                  -nome
+*                  -matricula
+*                  -nota
+*              properties: 
+*                  nome:
+*                      type: string
+*                  matricula: 
+*                      type: integer
+*                  nota: 
+*                      type: number
+*                      format: double 
+*/
 
  /**
  * @swagger
  * definitions:
  *   Endereco:
- *     properties:
- *       rua:
- *         type: string
- *       numero:
- *         type: integer
- *       bairro:
- *         type: string
+ *           type: object 
+ *           required: true
+ *                  -rua
+ *                  -numero
+ *                  -bairro
+ *           properties: 
+ *                  nome:
+ *                      rua: string
+ *                  numero: 
+ *                      type: integer
+ *                  bairro: 
+ *                      type: string 
+ */
+
+ /**
+ * @swagger
+ * definitions:
+ *   ResponseList:
+ *       200:
+ *         description: Sucess
+ *       400:
+ *         description: Bad Request
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Internal Server Error
  */
 
 
@@ -46,9 +74,17 @@ var db = require('../queries');
  *         type: integer
  *     responses:
  *       200:
- *         description: Aluno retornado
- *         schema:
- *           $ref: '#/definitions/Aluno'
+ *         description: Sucess
+ *       400:
+ *         description: Bad Request
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Internal Server Error
  */
 
 
@@ -63,33 +99,59 @@ var db = require('../queries');
  *       - application/json
  *     responses:
  *       200:
- *         description: Dados gerais retornados
- *         schema:
- *           $ref: '#/definitions/Aluno'
- */
-
-
+ *         description: Sucess
+ *       400:
+ *         description: Bad Request
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Internal Server Error
+*/
 
  /**
  * @swagger
- * /escola/cadastrarAluno/:
- *   post:
- *     tags:
- *       - Alunos
- *     description: Cadastra um novo aluno através dos seus dados e endereço
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: aluno
- *         description: Json de Aluno e Endereço
- *         in: path
- *         required: true
- *         schema:
- *           $ref: '#/definitions/Aluno'
- *     responses:
- *       200:
- *         description: Aluno cadastrado
- */
+* /escola/cadastrarAluno/:
+*   post:
+*     tags:
+*       - Alunos
+*     description: Cadastrar um novo aluno através dos seus dados e endereço
+*     produces:
+*       - application/json
+*     parameters:
+*       - name: body
+*         description: Parâmetros para o cadastro de um aluno
+*         in: body
+*         required: true
+*         schema:
+*           type: object
+*           properties: 
+*              aluno: 
+*                $ref: '#/definitions/Aluno'
+*              endereco: 
+*                $ref: '#/definitions/Endereco'
+*           example:      
+*              {aluno : { nome : Ana, matricula : 12345, nota : 9.7}, endereco: {rua : Rua Brasil, numero : 456, bairro : Campo Grande}}
+*     responses:
+*           200:
+*               description: Sucess
+*           400:
+*               description: Bad Request
+*           401:
+*                description: Unauthorized
+*           403:
+*               description: Forbidden
+*           404:
+*                description: Not found
+*           500:
+*               description: Internal Server Error
+*/
+
+
+ 
 
 router.get('/escola/alunos/:id', db.alunoListar);
 router.get('/escola/informacoes', db.infoGeraisListar);

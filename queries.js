@@ -23,7 +23,7 @@ function listar(req, res, next){
 
             res.status(200)
             .json({
-                status: 'success',
+                status: 'Successo',
                 data: dados,
                 message: 'Aluno retornado'
             });

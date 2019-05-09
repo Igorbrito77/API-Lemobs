@@ -43,11 +43,11 @@ function teste(){
             status: 'Successo',
             data: data,
             message: 'Aluno retornado'
-        });
+        }).send();
 
       })
      .catch(e =>{
-        return  res.status(400).send();
+        return  res.status(400).send({e : "deu ruim/bom"});
      });
     
 }

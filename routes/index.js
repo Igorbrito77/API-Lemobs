@@ -6,6 +6,14 @@ var db = require('../database/queries');
 /**
  * @swagger
 * definitions:
+*  Dados:      
+*              type: object
+*              properties:
+*                 Aluno:
+*                    $ref: '#/definitions/Aluno'
+*                 Endereco:
+*                    $ref: '#/definitions/Dados'
+*
 *  Aluno: 
 *              type: object 
 *              properties: 
@@ -15,7 +23,7 @@ var db = require('../database/queries');
 *                      type: string
 *                  nota: 
 *                      type: number
-*                      format: double 
+*                      format: float 
 *  Endereco:
 *           type: object 
 *           properties: 
@@ -87,12 +95,9 @@ var db = require('../database/queries');
 *         in: body
 *         required: true
 *         schema:
-*           type: object
 *           properties: 
-*              aluno: 
-*                $ref: '#/definitions/Aluno'
-*              endereco: 
-*                $ref: '#/definitions/Endereco'
+*              Dados:
+*                $ref: '#/definitions/Dados'
 *           example:      
 *              {aluno : { nome : Ana, matricula : "12345", nota : 9.7}, endereco: {rua : Rua Brasil, numero : 456, bairro : Campo Grande}}
 *     responses:

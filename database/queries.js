@@ -21,11 +21,13 @@ const client = new Client({
   ssl: true,
 });
 
-client.connect();
+
 
 
 function teste(){
-/*
+
+    client.connect();
+    /*
     client.query('select * from aluno where id = 1', (err, res) => {
         if (err) throw err;
         for (let row of res.rows) {

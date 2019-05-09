@@ -6,7 +6,7 @@ Etapas :
 
 * Baixe o repositório, e abra- o em seguida.
 * Instale as dependências com "npm install" ou "npm i"
-* Execute scriptBanco.sql com o comando "psql -f scriptBanco.sql" no terminal para criar  banco de dados, tabelas e inserir alguns dados nas mesmas.
+* Execute scriptBanco.sql com o comando "psql -f scriptBanco.sql" no terminal, para criar  banco de dados, tabelas e inserir alguns dados nas mesmas.
 
 * Alterar usuário e senha do postgres nos arquivos queries.js e secret.js respectivamente.
 

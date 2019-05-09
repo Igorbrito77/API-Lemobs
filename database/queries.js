@@ -23,32 +23,6 @@ const client = new Client({
 
 client.connect();
 
-/*
-function teste(req, res, next){
-
-    (async() => { 
-
-        try{
-            var dados;
-
-            await client.query('select * from aluno where id = 1').then(data => {
-                dados = data;
-            });
-
-            res.status(200)
-            .json({
-                status: 'Successo',
-                data: dados,
-                message: 'Aluno retornado'
-            });
-
-        }
-        catch(error){
-            return res.status(400).send();
-        }
-    })();    
-}
-*/
 
 function listar(req, res, next){
 
@@ -58,7 +32,7 @@ function listar(req, res, next){
             var dados;
 
             await client.query('select * from aluno where id = 5').then(data =>{
-                dados = data; 
+                dados = data.rows; 
             });
 
             res.status(200)
@@ -85,7 +59,7 @@ function inserir(req, res, next) {
             var id_aluno, num_matriculados;
 
             await client.query('select count(*) from aluno where matricula = $1', req.body.aluno.matricula).then(data =>{
-                num_matriculados = data.count
+                num_matriculados = data.rows.count
             });
 
             if(num_matriculados > 0)
@@ -93,7 +67,7 @@ function inserir(req, res, next) {
 
             await  client.query('insert into endereco (rua, numero, bairro) ' +
             'values( ${rua}, ${numero}, ${bairro}) returning id', req.body.endereco).then(data =>{
-                id_aluno = data.id;
+                id_aluno = data.rows.id;
             });
 
             await  client.query('insert into aluno (nome, matricula, nota, endereco_id)' +
@@ -126,15 +100,14 @@ function inserir(req, res, next) {
             await client.query('select endereco.bairro , count(*) as total_alunos,  avg(aluno.nota) as media_notas from aluno inner join endereco' 
             + ' on aluno.endereco_id = endereco.id group by endereco.bairro order by count(*) desc ;').then(data =>{
                 dados = data
-            
             });
         
             await client.query('select count(*) from aluno').then(data =>{
-                num_alunos = data.count;
+                num_alunos = data.rows.count;
             });
 
             await  client.query('select avg(nota) from aluno').then(data =>{
-                media = data.avg;
+                media = data.rows.avg;
             });
             
             res.status(200)      

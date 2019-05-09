@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../database/queries');
-//var doc = require('../documentacao');
 
 /**
  * @swagger
@@ -115,9 +114,12 @@ var db = require('../database/queries');
 */
 
 
- 
 
-router.get('/escola/alunos/:id', db.alunoListar);
+
+   
+
+router.get('/escola/alunos/:id', db.teste);
+//router.get('/escola/alunos/:id', db.alunoListar);
 router.get('/escola/informacoes', db.infoGeraisListar);
 router.post('/escola/cadastrarAluno', db.alunoInserir); 
 

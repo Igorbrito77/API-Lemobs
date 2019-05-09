@@ -1,20 +1,42 @@
 var promise = require('bluebird');
 //const secret = require('./secret');
-var options = {
-  promiseLib: promise
-};
+// var options = {
+//   promiseLib: promise
+// };
 
-var pgp = require('pg-promise')(options);
+//var pgp = require('pg-promise')(options);
 //var user = 'postgres';
 //var nameDatabase = 'bancolemobs';
 
 //var connectionString = 'postgres://' + user+ ':' +secret.DATABASE_PASSWORD + '@localhost:5432/' + nameDatabase;
-//var connectionString = 'postgres://vdhnbzazjnhtiu:220472865290e1f04c1a99aa10065b44f7afa76e3fb3af44b27c5ed15082f402@ec2-184-72-237-95.compute-1.amazonaws.com:5432/d3rng3cims4eus'
-
 //var db = pgp(connectionString);
-//var db = pgp('postgres://ohvmyywuzmgvnq:5a8214bded32e2d20a7add6a54e5526f81a655c2ba1ad9af618c77231c3560a0@ec2-184-72-237-95.compute-1.amazonaws.com:5432/damemcf2iu8o46')
 
 //get - retorna as informação de um aluno, tendo o seu id como parâmetro
+
+
+const { Client } = require('pg');
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
+client.connect();
+
+
+function teste(){
+
+    client.query('select * from aluno where id = 1', (err, res) => {
+        if (err) throw err;
+        for (let row of res.rows) {
+          console.log(JSON.stringify(row));
+        }
+        client.end();
+      });
+    
+}
+
+
 function listar(req, res, next){
 
     (async() => { 
@@ -119,6 +141,7 @@ function inserir(req, res, next) {
 
 
 module.exports = {
+    teste : teste,
     alunoListar : listar,
     alunoInserir : inserir,
     infoGeraisListar : infoGerais

@@ -31,7 +31,7 @@ function listar(req, res, next){
         try{
             var dados;
 
-            await client.query('select * from aluno where id = 5').then(data =>{
+            await client.query('select * from aluno where id = $1', req.params.id).then(data =>{
                 dados = data.rows; 
             });
 
@@ -99,7 +99,7 @@ function inserir(req, res, next) {
 
             await client.query('select endereco.bairro , count(*) as total_alunos,  avg(aluno.nota) as media_notas from aluno inner join endereco' 
             + ' on aluno.endereco_id = endereco.id group by endereco.bairro order by count(*) desc ;').then(data =>{
-                dados = data
+                dados = data.rows;
             });
         
             await client.query('select count(*) from aluno').then(data =>{

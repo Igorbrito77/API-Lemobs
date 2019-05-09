@@ -17,7 +17,7 @@ var promise = require('bluebird');
 const { Client } = require('pg');
 
 const client = new Client({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: 'postgres://ohvmyywuzmgvnq:5a8214bded32e2d20a7add6a54e5526f81a655c2ba1ad9af618c77231c3560a0@ec2-184-72-237-95.compute-1.amazonaws.com:5432/damemcf2iu8o46',
   ssl: true,
 });
 

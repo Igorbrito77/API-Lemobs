@@ -5,37 +5,6 @@ var db = require('../database/queries');
 
 /**
  * @swagger
-* definitions:
-*  Dados:      
-*              properties:
-*                 aluno:
-*                    schema:
-*                      type: object 
-*                      $ref: '#/definitions/Aluno'
-*                 endereco:
-*                    schema:
-*                      type: object 
-*                      $ref: '#/definitions/Dados'
-*
-*  Aluno: 
-*              properties: 
-*                  nome:
-*                      type: string
-*                  matricula: 
-*                      type: string
-*                  nota: 
-*                      type: number
-*                      format: float 
-*  
-*  Endereco:
-*              properties: 
-*                   rua:
-*                       type: string
-*                   numero: 
-*                       type: integer
-*                   bairro: 
-*                       type: string 
-*/
 
  /**
  * @swagger

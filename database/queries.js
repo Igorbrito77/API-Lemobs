@@ -5,7 +5,6 @@ var options = {
 };
 
 var pgp = require('pg-promise')(options);
-var pg = require('pg');
 //var user = 'postgres';
 //var nameDatabase = 'bancolemobs';
 
@@ -13,7 +12,7 @@ var pg = require('pg');
 //var connectionString = 'postgres://vdhnbzazjnhtiu:220472865290e1f04c1a99aa10065b44f7afa76e3fb3af44b27c5ed15082f402@ec2-184-72-237-95.compute-1.amazonaws.com:5432/d3rng3cims4eus'
 
 //var db = pgp(connectionString);
-var db = pg('postgres://ohvmyywuzmgvnq:5a8214bded32e2d20a7add6a54e5526f81a655c2ba1ad9af618c77231c3560a0@ec2-184-72-237-95.compute-1.amazonaws.com:5432/damemcf2iu8o46')
+var db = pgp('postgres://ohvmyywuzmgvnq:5a8214bded32e2d20a7add6a54e5526f81a655c2ba1ad9af618c77231c3560a0@ec2-184-72-237-95.compute-1.amazonaws.com:5432/damemcf2iu8o46')
 
 //get - retorna as informação de um aluno, tendo o seu id como parâmetro
 function listar(req, res, next){

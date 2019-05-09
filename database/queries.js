@@ -6,10 +6,11 @@ var options = {
 
 var pgp = require('pg-promise')(options);
 
-var user = 'postgres';
-var nameDatabase = 'bancolemobs';
+//var user = 'postgres';
+//var nameDatabase = 'bancolemobs';
 
-var connectionString = 'postgres://' + user+ ':' +secret.DATABASE_PASSWORD + '@localhost:5432/' + nameDatabase;
+//var connectionString = 'postgres://' + user+ ':' +secret.DATABASE_PASSWORD + '@localhost:5432/' + nameDatabase;
+var connectionString = 'postgres://vdhnbzazjnhtiu:220472865290e1f04c1a99aa10065b44f7afa76e3fb3af44b27c5ed15082f402@ec2-184-72-237-95.compute-1.amazonaws.com:5432/d3rng3cims4eus'
 var db = pgp(connectionString);
 
 

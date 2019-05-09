@@ -3,8 +3,6 @@ var router = express.Router();
 var db = require('../database/queries');
 //var doc = require('../documentacao');
 
-/**
- * @swagger
 
  /**
  * @swagger

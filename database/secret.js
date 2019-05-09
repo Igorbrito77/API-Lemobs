@@ -1,5 +1,5 @@
 
 module.exports = {
-    DATABASE_PASSWORD : 'bancoblz'
+    DATABASE_PASSWORD : 'bancoblz' // senha do banco de dados
 };
 

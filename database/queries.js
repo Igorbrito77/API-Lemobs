@@ -1,91 +1,75 @@
 var promise = require('bluebird');
 const secret = require('./secret');
-// var options = {
-//   promiseLib: promise
-// };
+var options = {
+  promiseLib: promise
+};
 
-//var pgp = require('pg-promise')(options);
-var user = 'postgres';
-var nameDatabase = 'bancolemobs';
+var pgp = require('pg-promise')(options);
 
-//var connectionString = 'postgres://' + user+ ':' +secret.DATABASE_PASSWORD + '@localhost:5432/' + nameDatabase;
-//var db = pgp(connectionString);
-
-//get - retorna as informação de um aluno, tendo o seu id como parâmetro
+var user = 'postgres'; // usuário do banco
+var nameDatabase = 'bancolemobs';  // nome do banco de dados
+var connectionString = 'postgres://' + user+ ':' +secret.DATABASE_PASSWORD + '@localhost:5432/' + nameDatabase;
+var db = pgp(connectionString);
 
 
-const { Client } = require('pg');
-
-const client = new Client({
-  connectionString: 'postgres://ohvmyywuzmgvnq:5a8214bded32e2d20a7add6a54e5526f81a655c2ba1ad9af618c77231c3560a0@ec2-184-72-237-95.compute-1.amazonaws.com:5432/damemcf2iu8o46',
-  //connectionString : 'postgres://' + user+ ':' +secret.DATABASE_PASSWORD + '@localhost:5432/' + nameDatabase,
-  ssl: true
-});
-
-client.connect();
-
-
+//get - retorna as informações de um aluno específico, tendo o seu id como parâmetro
 function listar(req, res, next){
 
     (async() => { 
 
         try{
-            var dados;
-            var query_str = 'select * from aluno where id =' + req.params.id;
+            var aluno, endereco;
 
-            await client.query(query_str).then(data =>{
-                dados = data.rows; 
+            await db.one('select * from aluno where id = $1', req.params.id).then(data =>{
+                aluno = data; 
             });
+
+            await db.one('select * from endereco where id = $1', aluno.endereco_id).then(data =>{
+                endereco = data;
+            })
 
             res.status(200)
             .json({
                 status: 'Successo',
-                data: dados,
+                data: {"aluno " : {"nome" : aluno.nome, "matricula" : aluno.matricula,
+                "nota" : aluno.nota, "endereco" : endereco}},
                 message: 'Aluno retornado'
             });
 
         }
         catch(error){
-            return res.status(400);
+            return res.status(400).send();
         }
     })();
 }
 
-//post - insere um novo aluno no banco de dados
+//post - cadastra um novo aluno e seu respectivo endereço no banco de dados
 function inserir(req, res, next) {
-   
+    console.log(req.body.aluno.matricula);
     (async() => { 
 
         try{
 
-           var id_endereco;
-           var num_alunos;
-            
-            var query_str =`select count(*) from aluno where matricula = '` + req.body.aluno.matricula + `'`;
-            var query_str2 = `insert into endereco (rua, numero, bairro) ` +
-             `values('` + req.body.endereco.rua + `','` + req.body.endereco.numero + `', '`+ req.body.endereco.bairro +
-             `') returning id`;     
-          
-            await client.query(query_str).then(data =>{
-                num_alunos = data.rows[0].count; 
+            var id_aluno, num_matriculados;
+
+            await db.one('select count(*) from aluno where matricula = $1', req.body.aluno.matricula).then(data =>{
+                num_matriculados = data.count
             });
 
-            if(num_alunos > 0)
+            if(num_matriculados > 0)
                 return res.status(401).send({error : 'Aluno já matriculado'});
 
-            await  client.query(query_str2).then(data =>{
-                id_endereco = data.rows[0].id;
+            await  db.one('insert into endereco (rua, numero, bairro) ' +
+            'values( ${rua}, ${numero}, ${bairro}) returning id', req.body.endereco).then(data =>{
+                id_aluno = data.id;
             });
 
-            var query_str3 = `insert into aluno (nome, matricula, nota, endereco_id) `+
-            `values( '` + req.body.aluno.nome + `', '` + req.body.aluno.matricula + `', `+ req.body.aluno.nota + `, ` + id_endereco + `)`;
-
-            await  client.query(query_str3);
+            await  db.none('insert into aluno (nome, matricula, nota, endereco_id)' +
+            'values( ${nome}, ${matricula}, ${nota},' +  id_aluno + ')' , req.body.aluno);
 
             res.status(200)
             .json({
                 status: 'Sucesso',
-                data : id_endereco,
                 message: 'Aluno cadastrado'
             });
 
@@ -96,7 +80,7 @@ function inserir(req, res, next) {
     })();
   }
 
-//get - retorna todas as informações gerais
+//get - retorna todas as informações gerais 
  function infoGerais(req, res, next){
  
     (async() => { 
@@ -107,23 +91,24 @@ function inserir(req, res, next) {
             var media;
             var dados;
 
-            await client.query('select endereco.bairro , count(*) as total_alunos,  avg(aluno.nota) as media_notas from aluno inner join endereco' 
+            await db.many('select endereco.bairro , count(*) as total_alunos,  avg(aluno.nota) as media_notas from aluno inner join endereco' 
             + ' on aluno.endereco_id = endereco.id group by endereco.bairro order by count(*) desc ;').then(data =>{
-                dados = data.rows;
+                dados = data
+            
             });
         
-            await client.query('select count(*) from aluno').then(data =>{
-                num_alunos = data.rows;
+            await db.one('select count(*) from aluno').then(data =>{
+                num_alunos = data.count;
             });
 
-            await  client.query('select avg(nota) from aluno').then(data =>{
-                media = data.rows;
+            await  db.one('select avg(nota) from aluno').then(data =>{
+                media = data.avg;
             });
             
             res.status(201)      
             .json({
                 status: 'Successo',
-                data:{"Total de alunos" : num_alunos , "Média total" : media, "Dados dos bairros" :  dados},
+                data:{"total_alunos" : num_alunos , "media_total" : media, "info_bairros" :  dados},
                 message: 'Informações gerais retornadas'
             });
         
@@ -137,9 +122,7 @@ function inserir(req, res, next) {
 
 
 module.exports = {
-    //teste : teste,
     alunoListar : listar,
     alunoInserir : inserir,
     infoGeraisListar : infoGerais
 };
-

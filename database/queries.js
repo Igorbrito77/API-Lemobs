@@ -57,7 +57,7 @@ function inserir(req, res, next) {
             });
 
             if(num_matriculados > 0)
-                return res.status(401).send({error : 'Aluno já matriculado'});
+                return res.status(401).send({error : 'Matrícula já cadastrada'});
 
             await  db.one('insert into endereco (rua, numero, bairro) ' +
             'values( ${rua}, ${numero}, ${bairro}) returning id', req.body.endereco).then(data =>{

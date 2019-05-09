@@ -24,32 +24,31 @@ const client = new Client({
 
 
 
-function teste(){
+function teste(req, res, next){
 
     client.connect();
-    /*
-    client.query('select * from aluno where id = 1', (err, res) => {
-        if (err) throw err;
-        for (let row of res.rows) {
-          console.log(JSON.stringify(row));
+
+    (async() => { 
+
+        try{
+            var dados;
+
+            await client.query('select * from aluno where id = 1').then(data => {
+                dados = data;
+            });
+
+            res.status(200)
+            .json({
+                status: 'Successo',
+                data: dados,
+                message: 'Aluno retornado'
+            });
+
         }
-        client.end();
-      });
-*/
-      client.query('select * from aluno where id = 1').then(data => {
-
-        res.status(200)
-        .json({
-            status: 'Successo',
-            data: data,
-            message: 'Aluno retornado'
-        }).send();
-
-      })
-     .catch(e =>{
-        return  res.status(400).send({e : "deu ruim/bom"});
-     });
-    
+        catch(error){
+            return res.status(400).send();
+        }
+    })();    
 }
 
 

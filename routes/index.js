@@ -118,8 +118,8 @@ var db = require('../database/queries');
 
    
 
-router.get('/escola/alunos/:id', db.teste);
-//router.get('/escola/alunos/:id', db.alunoListar);
+//router.get('/escola/alunos/:id', db.teste);
+router.get('/escola/alunos/:id', db.alunoListar);
 router.get('/escola/informacoes', db.infoGeraisListar);
 router.post('/escola/cadastrarAluno', db.alunoInserir); 
 

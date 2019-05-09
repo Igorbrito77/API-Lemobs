@@ -23,11 +23,8 @@ const client = new Client({
 
 client.connect();
 
-
-
+/*
 function teste(req, res, next){
-
-  
 
     (async() => { 
 
@@ -51,7 +48,7 @@ function teste(req, res, next){
         }
     })();    
 }
-
+*/
 
 function listar(req, res, next){
 
@@ -60,7 +57,7 @@ function listar(req, res, next){
         try{
             var dados;
 
-            await db.one('select * from aluno where id = $1', req.params.id).then(data =>{
+            await client.query('select * from aluno where id = $1', req.params.id).then(data =>{
                 dados = data; 
             });
 
@@ -87,19 +84,19 @@ function inserir(req, res, next) {
 
             var id_aluno, num_matriculados;
 
-            await db.one('select count(*) from aluno where matricula = $1', req.body.aluno.matricula).then(data =>{
+            await client.one('select count(*) from aluno where matricula = $1', req.body.aluno.matricula).then(data =>{
                 num_matriculados = data.count
             });
 
             if(num_matriculados > 0)
                 return res.status(401).send({error : 'Aluno já matriculado'});
 
-            await  db.one('insert into endereco (rua, numero, bairro) ' +
+            await  client.one('insert into endereco (rua, numero, bairro) ' +
             'values( ${rua}, ${numero}, ${bairro}) returning id', req.body.endereco).then(data =>{
                 id_aluno = data.id;
             });
 
-            await  db.none('insert into aluno (nome, matricula, nota, endereco_id)' +
+            await  client.none('insert into aluno (nome, matricula, nota, endereco_id)' +
             'values( ${nome}, ${matricula}, ${nota},' +  id_aluno + ')' , req.body.aluno);
 
             res.status(200)
@@ -126,17 +123,17 @@ function inserir(req, res, next) {
             var media;
             var dados;
 
-            await db.many('select endereco.bairro , count(*) as total_alunos,  avg(aluno.nota) as media_notas from aluno inner join endereco' 
+            await client.many('select endereco.bairro , count(*) as total_alunos,  avg(aluno.nota) as media_notas from aluno inner join endereco' 
             + ' on aluno.endereco_id = endereco.id group by endereco.bairro order by count(*) desc ;').then(data =>{
                 dados = data
             
             });
         
-            await db.one('select count(*) from aluno').then(data =>{
+            await client.one('select count(*) from aluno').then(data =>{
                 num_alunos = data.count;
             });
 
-            await  db.one('select avg(nota) from aluno').then(data =>{
+            await  client.one('select avg(nota) from aluno').then(data =>{
                 media = data.avg;
             });
             
@@ -157,8 +154,8 @@ function inserir(req, res, next) {
 
 
 module.exports = {
-    teste : teste,
-    //alunoListar : listar,
+    //teste : teste,
+    alunoListar : listar,
     alunoInserir : inserir,
     infoGeraisListar : infoGerais
 };

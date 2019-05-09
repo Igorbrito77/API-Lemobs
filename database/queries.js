@@ -1,12 +1,12 @@
 var promise = require('bluebird');
-//const secret = require('./secret');
+const secret = require('./secret');
 // var options = {
 //   promiseLib: promise
 // };
 
 //var pgp = require('pg-promise')(options);
-//var user = 'postgres';
-//var nameDatabase = 'bancolemobs';
+var user = 'postgres';
+var nameDatabase = 'bancolemobs';
 
 //var connectionString = 'postgres://' + user+ ':' +secret.DATABASE_PASSWORD + '@localhost:5432/' + nameDatabase;
 //var db = pgp(connectionString);
@@ -18,7 +18,8 @@ const { Client } = require('pg');
 
 const client = new Client({
   connectionString: 'postgres://ohvmyywuzmgvnq:5a8214bded32e2d20a7add6a54e5526f81a655c2ba1ad9af618c77231c3560a0@ec2-184-72-237-95.compute-1.amazonaws.com:5432/damemcf2iu8o46',
-  ssl: true,
+  //connectionString : 'postgres://' + user+ ':' +secret.DATABASE_PASSWORD + '@localhost:5432/' + nameDatabase,
+  ssl: true
 });
 
 client.connect();
@@ -30,8 +31,7 @@ function listar(req, res, next){
 
         try{
             var dados;
-            var id = 1;
-            var query_str = 'select * from aluno where id =' + id;
+            var query_str = 'select * from aluno where id =' + req.params.id;
 
             await client.query(query_str).then(data =>{
                 dados = data.rows; 
@@ -46,38 +46,46 @@ function listar(req, res, next){
 
         }
         catch(error){
-            return res.status(400).send();
+            return res.status(400);
         }
     })();
 }
 
 //post - insere um novo aluno no banco de dados
 function inserir(req, res, next) {
-    console.log(req.body.aluno.matricula);
+   
     (async() => { 
 
         try{
 
-            var id_aluno, num_matriculados;
-
-            await client.query('select count(*) from aluno where matricula = $1', req.body.aluno.matricula).then(data =>{
-                num_matriculados = data.rows.count
+           var id_endereco;
+           var num_alunos;
+            
+            var query_str =`select count(*) from aluno where matricula = '` + req.body.aluno.matricula + `'`;
+            var query_str2 = `insert into endereco (rua, numero, bairro) ` +
+             `values('` + req.body.endereco.rua + `','` + req.body.endereco.numero + `', '`+ req.body.endereco.bairro +
+             `') returning id`;     
+          
+            await client.query(query_str).then(data =>{
+                num_alunos = data.rows[0].count; 
             });
 
-            if(num_matriculados > 0)
+            if(num_alunos > 0)
                 return res.status(401).send({error : 'Aluno já matriculado'});
 
-            await  client.query('insert into endereco (rua, numero, bairro) ' +
-            'values( ${rua}, ${numero}, ${bairro}) returning id', req.body.endereco).then(data =>{
-                id_aluno = data.rows.id;
+            await  client.query(query_str2).then(data =>{
+                id_endereco = data.rows[0].id;
             });
 
-            await  client.query('insert into aluno (nome, matricula, nota, endereco_id)' +
-            'values( ${nome}, ${matricula}, ${nota},' +  id_aluno + ')' , req.body.aluno);
+            var query_str3 = `insert into aluno (nome, matricula, nota, endereco_id) `+
+            `values( '` + req.body.aluno.nome + `', '` + req.body.aluno.matricula + `', `+ req.body.aluno.nota + `, ` + id_endereco + `)`;
+
+            await  client.query(query_str3);
 
             res.status(200)
             .json({
                 status: 'Sucesso',
+                data : id_endereco,
                 message: 'Aluno cadastrado'
             });
 
@@ -102,7 +110,6 @@ function inserir(req, res, next) {
             await client.query('select endereco.bairro , count(*) as total_alunos,  avg(aluno.nota) as media_notas from aluno inner join endereco' 
             + ' on aluno.endereco_id = endereco.id group by endereco.bairro order by count(*) desc ;').then(data =>{
                 dados = data.rows;
-                alert(data.rows);
             });
         
             await client.query('select count(*) from aluno').then(data =>{

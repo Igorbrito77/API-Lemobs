@@ -53,13 +53,13 @@ var db = require('../database/queries');
  *           type: integer
  *     responses:
  *       200:
- *         description: Sucesso
+ *         description: Sucess
  *       400:
- *         description: Erro de sintaxe
+ *         description: Bad Request
  *       404:
- *         description: Não encontrado
+ *         description: Not Found
  *       500:
- *         description: Erro intreno de servidor (Internal Server Error)
+ *         description: Internal Server Error
  */
 
 
@@ -74,11 +74,11 @@ var db = require('../database/queries');
  *        - application/json
  *     responses:
  *       200:
- *         description: Sucesso
+ *         description: Sucess
  *       404:
- *         description: Não encontrado
+ *         description: Not Found
  *       500:
- *         description: Erro interno de servidor (Internal Server Error)
+ *         description: Internal Server Error
 */
 
  /**
@@ -104,21 +104,18 @@ var db = require('../database/queries');
 *              {aluno : { nome : Ana, matricula : "12345", nota : 9.7}, endereco: {rua : Rua Brasil, numero : 456, bairro : Campo Grande}}
 *     responses:
 *           200:
-*               description: Sucesso
+*               description: Sucess
+*           201:
+*               description: Created
 *           400:
-*               description: Sintaxe incorreta
+*               description: Bad Request
 *           404:
-*                description: Não encontrado
+*                description: Not Found
 *           500:
-*               description: Erro interno de servidor (Internal Server Error)
+*               description: Internal Server Error
 */
 
 
-
-
-   
-
-//router.get('/escola/alunos/:id', db.teste);
 router.get('/escola/alunos/:id', db.alunoListar);
 router.get('/escola/informacoes', db.infoGeraisListar);
 router.post('/escola/cadastrarAluno', db.alunoInserir); 

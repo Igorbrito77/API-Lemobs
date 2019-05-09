@@ -17,30 +17,23 @@ var swaggerDefinition = {
     version: '1.0.0',
     description: 'API Restful para um sistema de cadastro de alunos',
   },
-  //host: 'localhost:3000',
-  host : 'api-lemobs.herokuapp.com',
+  host: 'localhost:3000',
   basePath: '/',
 };
 
-// options for the swagger docs//
 var options = {
-  // import swaggerDefinitions
+ 
   swaggerDefinition: swaggerDefinition,
-  // path to the API docs
   apis: ['./routes/*.js'],
 };
 
-// initialize swagger-jsdoc
 var swaggerSpec = swaggerJSDoc(options);
 
-// serve swagger
 app.get('/swagger.json', function(req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerSpec);
 });
 
-
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.set('port', process.env.PORT || 3000);

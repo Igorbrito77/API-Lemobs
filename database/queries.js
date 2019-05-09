@@ -76,7 +76,7 @@ function inserir(req, res, next) {
     })();
   }
 
-
+//get - retorna todas as informações gerais
  function infoGerais(req, res, next){
  
     (async() => { 

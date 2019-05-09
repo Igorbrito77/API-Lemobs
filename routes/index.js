@@ -5,12 +5,9 @@ var db = require('../database/queries');
 
 /**
  * @swagger
-   Aluno: 
+* definitions:
+*  Aluno: 
 *              type: object 
-*              required: true
-*                  -nome
-*                  -matricula
-*                  -nota
 *              properties: 
 *                  nome:
 *                      type: string
@@ -19,41 +16,32 @@ var db = require('../database/queries');
 *                  nota: 
 *                      type: number
 *                      format: double 
+*  Endereco:
+*           type: object 
+*           properties: 
+*                  rua:
+*                      type: string
+*                  numero: 
+*                      type: integer
+*                  bairro: 
+*                      type: string 
 */
-
- /**
- * @swagger
- * definitions:
- *   Endereco:
- *           type: object 
- *           required: true
- *                  -rua
- *                  -numero
- *                  -bairro
- *           properties: 
- *                  nome:
- *                      rua: string
- *                  numero: 
- *                      type: integer
- *                  bairro: 
- *                      type: string 
- */
 
  /**
  * @swagger
  * /escola/alunos/{id}:
  *   get:
  *     tags:
- *       - Alunos
- *     description: Retorna os dados de um aluno específico
+ *        - Escola
+ *     description: Retorna os dados de um aluno por id
  *     produces:
- *       - application/json
+ *         - application/json
  *     parameters:
- *       - name: id
- *         description: Id (registro) do aluno matriculado
- *         in: path
- *         required: true
- *         type: integer
+ *         - name: id
+ *           description: Id do aluno matriculado
+ *           in: path
+ *           required: true
+ *           type: integer
  *     responses:
  *       200:
  *         description: Sucesso
@@ -71,10 +59,10 @@ var db = require('../database/queries');
  * /escola/informacoes:
  *   get:
  *     tags:
- *       - Alunos
- *     description: Retorna o número total de alunos e a média de todas as notas
+ *       - Escola
+ *     description: Retorna as informações gerais
  *     produces:
- *       - application/json
+ *        - application/json
  *     responses:
  *       200:
  *         description: Sucesso
@@ -89,12 +77,12 @@ var db = require('../database/queries');
 * /escola/cadastrarAluno/:
 *   post:
 *     tags:
-*       - Alunos
-*     description: Cadastrar um novo aluno através dos seus dados e endereço
+*       - Escola
+*     description: Cadastra um novo aluno
 *     produces:
 *       - application/json
 *     parameters:
-*       - name: body
+*       - name: dados
 *         description: Parâmetros para o cadastro de um aluno
 *         in: body
 *         required: true
@@ -115,7 +103,7 @@ var db = require('../database/queries');
 *           404:
 *                description: Não encontrado
 *           500:
-*               description: Erro intreno de servidor (Internal Server Error)
+*               description: Erro interno de servidor (Internal Server Error)
 */
 
 

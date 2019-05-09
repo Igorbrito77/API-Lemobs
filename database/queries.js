@@ -31,7 +31,7 @@ function listar(req, res, next){
         try{
             var dados;
             var id = 1;
-            var query_str = 'select * from aluno where id ' + id;
+            var query_str = 'select * from aluno where id =' + id;
 
             await client.query(query_str).then(data =>{
                 dados = data.rows; 

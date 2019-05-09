@@ -1,18 +1,19 @@
 var promise = require('bluebird');
-const secret = require('./secret');
+//const secret = require('./secret');
 var options = {
   promiseLib: promise
 };
 
 var pgp = require('pg-promise')(options);
+var pg = require('pg');
+//var user = 'postgres';
+//var nameDatabase = 'bancolemobs';
 
-var user = 'postgres';
-var nameDatabase = 'bancolemobs';
-
-var connectionString = 'postgres://' + user+ ':' +secret.DATABASE_PASSWORD + '@localhost:5432/' + nameDatabase;
+//var connectionString = 'postgres://' + user+ ':' +secret.DATABASE_PASSWORD + '@localhost:5432/' + nameDatabase;
 //var connectionString = 'postgres://vdhnbzazjnhtiu:220472865290e1f04c1a99aa10065b44f7afa76e3fb3af44b27c5ed15082f402@ec2-184-72-237-95.compute-1.amazonaws.com:5432/d3rng3cims4eus'
-var db = pgp(connectionString);
 
+//var db = pgp(connectionString);
+var db = pg(process.env.DATABASE_URL)
 
 //get - retorna as informação de um aluno, tendo o seu id como parâmetro
 function listar(req, res, next){

@@ -25,7 +25,7 @@ client.connect();
 
 
 function teste(){
-
+/*
     client.query('select * from aluno where id = 1', (err, res) => {
         if (err) throw err;
         for (let row of res.rows) {
@@ -33,6 +33,18 @@ function teste(){
         }
         client.end();
       });
+*/
+      client.query('select * from aluno where id = 1').then(data => {
+
+        res.status(200)
+        .json({
+            status: 'Successo',
+            data: data,
+            message: 'Aluno retornado'
+        });
+
+      })
+     .catch(e => res.send(400));
     
 }
 

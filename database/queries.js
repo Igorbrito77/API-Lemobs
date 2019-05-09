@@ -21,12 +21,13 @@ const client = new Client({
   ssl: true,
 });
 
+client.connect();
 
 
 
 function teste(req, res, next){
 
-    client.connect();
+  
 
     (async() => { 
 

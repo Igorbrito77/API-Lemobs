@@ -19,7 +19,7 @@ var swaggerDefinition = {
     description: 'API Restful para um sistema de cadastro de alunos',
   },
   //host: 'localhost:3000',
-  host : 'https://api-lemobs.herokuapp.com/swagger.json',
+  host : 'api-lemobs.herokuapp.com',
   basePath: '/',
 };
 

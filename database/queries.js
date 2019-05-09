@@ -44,7 +44,9 @@ function teste(){
         });
 
       })
-     .catch(e => res.send(400));
+     .catch(e =>{
+        return  res.status(400).send();
+     });
     
 }
 
@@ -154,7 +156,7 @@ function inserir(req, res, next) {
 
 module.exports = {
     teste : teste,
-    alunoListar : listar,
+    //alunoListar : listar,
     alunoInserir : inserir,
     infoGeraisListar : infoGerais
 };

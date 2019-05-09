@@ -30,8 +30,9 @@ function listar(req, res, next){
 
         try{
             var dados;
+            var id = 1;
 
-            await client.query('select * from aluno where id = $1', req.params.id).then(data =>{
+            await client.query('select * from aluno where id = $1', id).then(data =>{
                 dados = data.rows; 
             });
 
@@ -100,17 +101,18 @@ function inserir(req, res, next) {
             await client.query('select endereco.bairro , count(*) as total_alunos,  avg(aluno.nota) as media_notas from aluno inner join endereco' 
             + ' on aluno.endereco_id = endereco.id group by endereco.bairro order by count(*) desc ;').then(data =>{
                 dados = data.rows;
+                alert(data.rows);
             });
         
             await client.query('select count(*) from aluno').then(data =>{
-                num_alunos = data.rows.count;
+                num_alunos = data.rows;
             });
 
             await  client.query('select avg(nota) from aluno').then(data =>{
-                media = data.rows.avg;
+                media = data.rows;
             });
             
-            res.status(200)      
+            res.status(201)      
             .json({
                 status: 'Successo',
                 data:{"Total de alunos" : num_alunos , "Média total" : media, "Dados dos bairros" :  dados},
@@ -132,3 +134,4 @@ module.exports = {
     alunoInserir : inserir,
     infoGeraisListar : infoGerais
 };
+
